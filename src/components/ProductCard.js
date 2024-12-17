@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Rating from "./Rating";
+import { formatCurrencyString } from "use-shopping-cart/core";
 
 export default function ProductCard({ product, index }) {
   //   console.log("image");
@@ -14,7 +15,7 @@ export default function ProductCard({ product, index }) {
       <div className="relative w-full h-64">
         <Image
           priority={index === 0}
-          src={product.images[0]}
+          src={product.image}
           alt={product.name}
           fill
           sizes="100"
@@ -27,7 +28,10 @@ export default function ProductCard({ product, index }) {
           <div>
             <p className="text-gray-500">Price</p>
             <p className="text-lg font-semibold">
-              {product.default_price.unit_amount}
+              {formatCurrencyString({
+                currency: product.currency,
+                value: product.price,
+              })}
             </p>
           </div>
           <button className="border rounded-lg py-1 px-4">Add to Cart</button>
