@@ -1,11 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import Rating from "./Rating";
-import { formatCurrencyString } from "use-shopping-cart/core";
+import { formatCurrencyString, useShoppingCart } from "use-shopping-cart";
+import toast from "react-hot-toast";
 
 export default function ProductCard({ product, index }) {
-  //   console.log("image");
-  //   console.log(product.image);
+  const { addItem } = useShoppingCart();
+  function onAddToCart(event) {
+    event.preventDefault();
+    const id = toast.loading("Adding 1 item...");
+    addItem(product);
+    toast.success(`${product.name} added`, { id });
+  }
+
   console.log(product);
   return (
     <Link
@@ -34,7 +41,9 @@ export default function ProductCard({ product, index }) {
               })}
             </p>
           </div>
-          <button className="border rounded-lg py-1 px-4">Add to Cart</button>
+          <button onClick={onAddToCart} className="border rounded-lg py-1 px-4">
+            Add to Cart
+          </button>
         </div>
       </div>
     </Link>
