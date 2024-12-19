@@ -6,9 +6,11 @@ import {
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import { useShoppingCart } from "use-shopping-cart";
 
 export default function CartProduct({ product }) {
-  console.log(product.image);
+  const { setItemQuantity, removeItem } = useShoppingCart();
+  //console.log(product.image);
   return (
     <div className="flex justify-between space-x-4 hover:shadow-lg hover:border-opacity-50 border border-opacity-0 rounded-md p-4 bg-white">
       <Link
@@ -30,6 +32,7 @@ export default function CartProduct({ product }) {
       <div className="flex items-center">
         <div className="flex items-center space-x-3">
           <button
+            onClick={() => setItemQuantity(product.id, product.quantity - 1)}
             disabled={product.quantity <= 1}
             // onClick={() => setCount((count) => count - 1)}
             className="p-1 rounded-md hover:bg-rose-100 hover:text-rose-500"
@@ -39,6 +42,7 @@ export default function CartProduct({ product }) {
           <p className="font-semibold text-xl">{product.quantity}</p>
           <button
             // onClick={() => setCount((count) => count + 1)}
+            onClick={() => setItemQuantity(product.id, product.quantity + 1)}
             className="p-1 rounded-md hover:bg-green-100 hover:text-green-500"
           >
             <PlusIcon className="w-6 h-6 flex-shrink-0" />
@@ -48,7 +52,10 @@ export default function CartProduct({ product }) {
           <XMarkIcon className="didden w-4 h-4 text-gray-500 sm:inline-block mr-4 mb-1" />
           {product.formattedPrice}
         </p>
-        <button className="ml-4 hover:text-red-500">
+        <button
+          onClick={() => removeItem(product.id)}
+          className="ml-4 hover:text-red-500"
+        >
           <XCircleIcon className="w-6 h-6 flex-shrink-0 opacity-50 hover:opacity-100 transition-opacity" />
         </button>
       </div>
